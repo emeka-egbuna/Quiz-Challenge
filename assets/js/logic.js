@@ -1,4 +1,5 @@
 var time = document.querySelector("#time");
+var startScreen = document.querySelector("#start-screen");
 var start = document.querySelector("#start");
 var questions = document.querySelector("#questions");
 var questionTitle = document.querySelector("#question-title");
@@ -37,9 +38,15 @@ var promise = undefined;
 
 var incorrect = new Audio('https://emeka-egbuna.github.io/Quiz-Challenge/assets/sfx/incorrect.wav');
 
+/*
+ * E V E N T    L I S T E N E R
+ * 
+ * Displays each question and hides previous ones.
+ */
 start.addEventListener("click", function(event){
     startTimer();
 
+    startScreen.classList.add("hide");
     questions.classList.remove("hide");
     getQuestion();
 });
@@ -77,8 +84,12 @@ function startTimer() {
  * F U N C T I O N
  *
  * getQuestion()
+ * Selects the next question by calling displayQuestions(index)
+ * and set CSS properties to display the next question and
+ * hides previous question.
  * 
- * 
+ * Function also stores index increment for the next question in
+ * the localStorage browser property.
  */
 function getQuestion(){
   questionTitle.textContent = testQuestions[questionNumber]['question'];
@@ -88,8 +99,15 @@ function getQuestion(){
 }
 
 /*
+ * F U N C T I O N
  *
- *
+ * displayQuestions(index)
+ * Displays each question from the testQuestions
+ * data structure and also creates li elements for answer choices to
+ * attach to the ol element.
+ * 
+ * @param index - a counter to keep track of next
+ * question in the queue to display.
  */
 function displayQuestions(index) {
   // Clear choiceList element
@@ -122,11 +140,11 @@ function displayQuestions(index) {
         // Test if string value of question answer-button equals
         // equivalent index in Answer array 
         if(event.target.innerHTML.slice(3) === answers[localStorage.getItem("questionNumber")]) {
-          feedback.textContent = "Correct!";
+          showRemark("Correct!");
           mark += score;
           correct.play();
         } else {
-          feedback.textContent = "Wrong!";
+          showRemark("Wrong!");
           incorrect.play();
           timePenalty();
         }
@@ -136,8 +154,6 @@ function displayQuestions(index) {
 
           // Increment and store question number index to load next question
           localStorage.setItem("questionNumber", questionNumber);
-          
-          feedback.classList.add("hide");
 
           getQuestion();
         } else {
@@ -150,7 +166,33 @@ function displayQuestions(index) {
   options.appendChild(choiceList);
 }
 
-submit.addEventListener("click", function(event){
+/*
+ * F U N C T I O N
+ *
+ * showRemark(remark)
+ * Alerts the user if the selected answer choice
+ * is Correct or Wrong.
+ * 
+ * @param remark - for adding correct or wrong user option
+ * for each question.
+ */
+function showRemark(remark) {
+    feedback.textContent = remark;
+
+    // Sets timer
+    remarkTimer = setTimeout(function() {
+      feedback.classList.add("hide");
+      clearTimeout(remarkTimer);
+    }, 1000);
+  }
+
+/*
+ * E V E N T    L I S T E N E R
+ * 
+ * Displays form for user to enter their initials and stores
+ * it with the user test score.
+ */
+  submit.addEventListener("click", function(event){
   event.preventDefault();
 
   var item = Number(localStorage.getItem("initIndex"));
