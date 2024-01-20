@@ -28,6 +28,15 @@ var penalty = -10;
 // Tracker for each question number.
 var questionNumber = 0;
 
+var correct = new Audio('https://emeka-egbuna.github.io/Quiz-Challenge/assets/sfx/correct.wav');
+// Default volume
+var volume = 1;
+//audio.paused = false;
+correct.volume = volume;
+var promise = undefined;
+
+var incorrect = new Audio('https://emeka-egbuna.github.io/Quiz-Challenge/assets/sfx/incorrect.wav');
+
 start.addEventListener("click", function(event){
     startTimer();
 
@@ -115,8 +124,10 @@ function displayQuestions(index) {
         if(event.target.innerHTML.slice(3) === answers[localStorage.getItem("questionNumber")]) {
           feedback.textContent = "Correct!";
           mark += score;
+          correct.play();
         } else {
           feedback.textContent = "Wrong!";
+          incorrect.play();
           timePenalty();
         }
 
