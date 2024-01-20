@@ -155,6 +155,10 @@ function displayQuestions(index) {
           // Increment and store question number index to load next question
           localStorage.setItem("questionNumber", questionNumber);
 
+          if(questionNumber == testQuestions.length) {
+            endQuiz();
+          }
+
           getQuestion();
         } else {
           endQuiz();
