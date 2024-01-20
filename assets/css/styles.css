@@ -31,7 +31,7 @@ button:hover {
 }
 
 .choices button {
-  display: block;
+  display: inline;
 }
 
 input[type="text"] {
@@ -39,6 +39,7 @@ input[type="text"] {
 }
 
 ol {
+  list-style-type: decimal;
   padding-left: 0px;
   max-height: 400px;
   overflow: auto;
@@ -46,7 +47,7 @@ ol {
 
 li {
   padding: 5px;
-  list-style: decimal inside none;
+  list-style: /*decimal inside*/ none;
 }
 
 li:nth-child(odd) {
